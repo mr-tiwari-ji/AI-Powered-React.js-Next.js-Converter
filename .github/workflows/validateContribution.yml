@@ -1,0 +1,23 @@
+name: Validate Contribution
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate folder structure
+        run: |
+          if [ ! -d "./contributions" ]; then
+            echo "Contributions folder is missing!" && exit 1
+          fi
+          if [ ! "$(find ./contributions -mindepth 2 -type d)" ]; then
+            echo "No valid submissions found!" && exit 1
+          fi
